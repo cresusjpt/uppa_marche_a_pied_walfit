@@ -15,6 +15,8 @@ import 'package:marche_a_pied/ui/example/SparkChart.dart';
 import 'package:marche_a_pied/ui/example/WithBarRenderer.dart';
 import 'package:marche_a_pied/ui/journal/DetailJournal.dart';
 import 'package:marche_a_pied/ui/login/Intro.dart';
+import 'package:marche_a_pied/ui/login/Login.dart';
+import 'package:marche_a_pied/ui/login/Signup.dart';
 import 'package:marche_a_pied/ui/settings/Settings.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:preferences/preference_service.dart';
@@ -56,6 +58,14 @@ class _AppState extends State<App> {
       case "/intro":
         return PageTransition(
             settings: settings, child: Intro(), type: PageTransitionType.fade);
+        break;
+      case "/login":
+        return PageTransition(
+            settings: settings, child: Login(), type: PageTransitionType.fade);
+        break;
+      case "/register":
+        return PageTransition(
+            settings: settings, child: SignUp(), type: PageTransitionType.fade);
         break;
       case "/principal":
         return PageTransition(
@@ -107,7 +117,7 @@ class _AppState extends State<App> {
         GlobalCupertinoLocalizations.delegate,
         AppLocalizations.delegate,
       ],
-      initialRoute: "/principal",
+      initialRoute: "/intro",
       routes: {},
       onGenerateRoute: onGeneratedRoute,
     );

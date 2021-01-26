@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:marche_a_pied/i18n/AppLanguage.dart';
 import 'package:marche_a_pied/keys/Url.dart';
-import 'file:///E:/Langage/Android/AndroidStudioProject/Flutter/marche_a_pied/lib/utils/http/HttpRequest.dart';
 import 'package:marche_a_pied/utils/Functions.dart';
+import 'package:marche_a_pied/utils/http/HttpRequest.dart';
 /*
 import 'package:univagenda/keys/url.dart';
  */

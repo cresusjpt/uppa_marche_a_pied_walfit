@@ -122,7 +122,7 @@ class _SignUpState extends State<SignUp> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'd',
+          text: 'walk',
           style: GoogleFonts.portLligatSans(
             textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
@@ -131,13 +131,13 @@ class _SignUpState extends State<SignUp> {
           ),
           children: [
             TextSpan(
-              text: 'ev',
+              text: 'Fit',
               style: TextStyle(color: Colors.black, fontSize: 30),
             ),
-            TextSpan(
+            /*TextSpan(
               text: 'rnz',
               style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
-            ),
+            ),*/
           ]),
     );
   }

@@ -95,7 +95,7 @@ class _IntroState extends State<Intro> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'M',
+          text: 'walk',
           style: GoogleFonts.portLligatSans(
             textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
@@ -104,13 +104,13 @@ class _IntroState extends State<Intro> {
           ),
           children: [
             TextSpan(
-              text: 'arche',
+              text: 'Fit',
               style: TextStyle(color: Colors.black, fontSize: 30),
             ),
-            TextSpan(
+            /*TextSpan(
               text: 'rnz',
               style: TextStyle(color: Colors.white, fontSize: 30),
-            ),
+            ),*/
           ]),
     );
   }

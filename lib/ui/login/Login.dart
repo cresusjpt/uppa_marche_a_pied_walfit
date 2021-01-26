@@ -201,7 +201,7 @@ class _LoginPageState extends State<Login> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'd',
+          text: 'walk',
           style: GoogleFonts.portLligatSans(
             textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 30,
@@ -210,13 +210,13 @@ class _LoginPageState extends State<Login> {
           ),
           children: [
             TextSpan(
-              text: 'ev',
+              text: 'Fit',
               style: TextStyle(color: Colors.black, fontSize: 30),
             ),
-            TextSpan(
+            /*TextSpan(
               text: 'rnz',
               style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
-            ),
+            ),*/
           ]),
     );
   }
@@ -224,7 +224,7 @@ class _LoginPageState extends State<Login> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Email id"),
+        _entryField("Email"),
         _entryField("Password", isPassword: true),
       ],
     );
