@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:intl/intl.dart';
+import 'package:marche_a_pied/models/Activity.dart';
+import 'package:marche_a_pied/stream/StreamerCustom.dart';
 import 'package:marche_a_pied/ui/example/ContainerChartExamples.dart';
 import 'package:marche_a_pied/ui/example/WithBarRenderer.dart';
+import 'package:marche_a_pied/ui/inheritedWidget/DetailInheritedWidget.dart';
+import 'package:marche_a_pied/ui/inheritedWidget/DetailInheritedWidgetData.dart';
 import 'package:marche_a_pied/widget/charts/DayTimeSerieRender.dart';
 
 class DayActivity extends StatefulWidget {
@@ -10,50 +15,83 @@ class DayActivity extends StatefulWidget {
 }
 
 class _DayActivityState extends State<DayActivity> {
+  DetailInheritedWidgetData inheritedWidgetData;
+  List<Activity> activities;
+  DateTime dateTime;
+  DateFormat format = DateFormat("EEEE, d MMMM y");
+  DateFormat formatBydate = DateFormat("yyyy-MM-dd");
+
+  void changeDate(int add){
+    setState(() {
+      add == 1 ? dateTime = dateTime.add(Duration(days: 1)) : dateTime = dateTime.subtract(Duration(days: 1));
+      inheritedWidgetData.sink.add(dateTime);
+      inheritedWidgetData.dateTime = dateTime;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<String> itemList = List();
-    itemList.add("28 December 2020 - 3 January 2021");
-    itemList.add("21 - 27 December 2020");
-    itemList.add("14 - 20 December 2020");
-    itemList.add("07 - 13 December 2020");
-    itemList.add("30 November - 6 December 2020");
+    inheritedWidgetData = DetailInheritedWidget.of(context).data;
+    activities = inheritedWidgetData.listActivities;
+    dateTime = inheritedWidgetData.dateTime;
 
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+      child: StreamBuilder<List<Activity>>(
+        stream: StreamerCustom("http://10.0.2.2:8080").byDateActivityStream(formatBydate.format(dateTime), 1),
+        builder: (context, snapshot) {
+          final List<Activity> daysActivities = snapshot.hasData ? snapshot.data : activities;
+          return Column(
             children: [
-              RawMaterialButton(
-                shape: CircleBorder(),
-                elevation: 0.0,
-                onPressed: () {},
-                child: Icon(Icons.chevron_left_outlined),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  RawMaterialButton(
+                    shape: CircleBorder(),
+                    elevation: 0.0,
+                    onPressed: () {
+                      changeDate(0);
+                    },
+                    child: Icon(Icons.chevron_left_outlined),
+                  ),
+                  Text(format.format(dateTime)),
+                  RawMaterialButton(
+                    shape: CircleBorder(),
+                    elevation: 0.0,
+                    onPressed: () {
+                      changeDate(1);
+                    },
+                    child: Icon(Icons.chevron_right_outlined),
+                  ),
+                ],
               ),
-              Text("Mardi le 12 Janvier 2021"),
-              RawMaterialButton(
-                shape: CircleBorder(),
-                elevation: 0.0,
-                onPressed: () {},
-                child: Icon(Icons.chevron_right_outlined),
-              ),
+              DayTimeSerieRender(daysActivities),
+              Divider(),
+              ...daysActivities.map((act){
+                return InkWell(
+                  onTap: (){
+                    Navigator.pushNamed(context, '/detailjournal',arguments: act);
+                  },
+                  child: ListTile(
+                    title: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("${act.heureDebutRemote.split(".")[0]} - ${act.heureFinRemote.split(".")[0]}",style: TextStyle(fontSize: 11),),
+                        Padding(
+                          padding: const EdgeInsets.only(top:8.0,bottom: 5.0),
+                          child: Text("${act.applyName()}",style: TextStyle(fontWeight: FontWeight.bold)),
+                        )
+                      ],
+                    ),
+                    subtitle: Text("${act.distance} Km ${act.minuteActive} Min ${act.calorie} Cal"),
+                  ),
+                );
+              }).toList(),
             ],
-          ),
-          DayTimeSerieRender(),
-          Divider(),
-          ...itemList.map((item) {
-            return InkWell(
-              onTap: () {},
-              child: ListTile(
-                title: Text(item),
-                subtitle: Text("8078 steps"),
-              ),
-            );
-          }).toList(),
-        ],
+          );
+        }
       ),
     );
   }

@@ -52,7 +52,7 @@ class _DetailJournalState extends State<DetailJournal> {
               Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 30,horizontal: 20),
-                  child: Text("Steps : ${currentActivity.steps}"),
+                  child: Text("Steps : ${currentActivity.step}"),
                 ),
               ),
               Padding(
@@ -72,7 +72,7 @@ class _DetailJournalState extends State<DetailJournal> {
                     ),
                     Flexible(
                       flex: 1,
-                      child: Text("${currentActivity.km} km",textAlign: TextAlign.end,),
+                      child: Text("${currentActivity.distance} km",textAlign: TextAlign.end,),
                     ),
                   ],
                 ),
@@ -116,7 +116,7 @@ class _DetailJournalState extends State<DetailJournal> {
                     ),
                     Flexible(
                       flex: 1,
-                      child: Text("${currentActivity.duration}",textAlign: TextAlign.end,),
+                      child: Text("${currentActivity.minuteActive}",textAlign: TextAlign.end,),
                     ),
                   ],
                 ),

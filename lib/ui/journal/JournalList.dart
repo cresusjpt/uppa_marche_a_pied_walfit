@@ -1,13 +1,13 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:marche_a_pied/main.dart';
 import 'package:marche_a_pied/models/Activity.dart';
-import 'package:marche_a_pied/styles/AppTheme.dart';
+import 'package:marche_a_pied/stream/StreamerCustom.dart';
 import 'package:marche_a_pied/widget/CustomFloatingActionButton.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class JournalList extends StatefulWidget {
-  List<Activity> activities = Activity().bindData();
+  //final List<Activity> activities = Activity().bindData();
 
   @override
   _JournalListState createState() => _JournalListState();
@@ -25,7 +25,6 @@ class _JournalListState extends State<JournalList> {
                 actions: <Widget>[
                   IconButton(
                     onPressed: (){
-
                     },
                     icon: Icon(Icons.sync),
                     tooltip: "deactivate_diffuser",
@@ -46,37 +45,43 @@ class _JournalListState extends State<JournalList> {
             ];
           },
           body: Center(
-            child: GroupedListView<Activity, String>(
-              elements: widget.activities,
-              order: GroupedListOrder.DESC,
-              groupBy: (activity){
-                return activity.dateActivity;
-              },
-              groupSeparatorBuilder: (String dateActi)=> ActivityGroupSeparator(dateAct: dateActi,steps: 7000),
-              itemBuilder: (context, Activity act){
-                return InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/detailjournal',arguments: act);
+            child: StreamBuilder<List<Activity>>(
+              stream: StreamerCustom("http://10.0.2.2:8080").allActivityStream(1),
+              builder: (context, snapshot) {
+                final List<Activity> activities = snapshot.hasData ? snapshot.data : List();
+                return GroupedListView<Activity, String>(
+                  elements: activities,
+                  order: GroupedListOrder.DESC,
+                  groupBy: (activity){
+                    return activity.dateActivity.toString().split(" ").elementAt(0);
                   },
-                  child: ListTile(
-                    title: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("${act.timeStart}",style: TextStyle(fontSize: 11),),
-                        Padding(
-                          padding: const EdgeInsets.only(top:8.0,bottom: 5.0),
-                          child: Text("${act.name}",style: TextStyle(fontWeight: FontWeight.bold)),
-                        )
-                      ],
-                    ),
-                    trailing: CircleAvatar(
-                      child: Icon(OMIcons.directionsWalk,),
-                    ),
-                    subtitle: Text("${act.km} km in ${act.duration}"),
-                  ),
+                  groupSeparatorBuilder: (String dateActi)=> ActivityGroupSeparator(dateAct: dateActi,steps: 7000,allAct: activities,),
+                  itemBuilder: (context, Activity act){
+                    return InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/detailjournal',arguments: act);
+                      },
+                      child: ListTile(
+                        title: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${act.heureDebutRemote.split(".")[0]}",style: TextStyle(fontSize: 11),),
+                            Padding(
+                              padding: const EdgeInsets.only(top:8.0,bottom: 5.0),
+                              child: Text("${act.applyName()}",style: TextStyle(fontWeight: FontWeight.bold)),
+                            )
+                          ],
+                        ),
+                        trailing: CircleAvatar(
+                          child: Icon(OMIcons.directionsWalk,),
+                        ),
+                        subtitle: Text("${act.distance} km in ${act.minuteActive}"),
+                      ),
+                    );
+                  },
                 );
-              },
+              }
             ),
           ),
         ),
@@ -89,10 +94,26 @@ class _JournalListState extends State<JournalList> {
 class ActivityGroupSeparator extends StatelessWidget {
   final String dateAct;
   final int steps;
-  ActivityGroupSeparator({this.dateAct,this.steps});
+  final List<Activity> allAct;
+  int steptotal = 0;
+  ActivityGroupSeparator({this.dateAct,this.steps,this.allAct});
 
   @override
   Widget build(BuildContext context) {
+
+    var internMap = groupBy<Activity,  DateTime>(allAct, (obj) {
+      return obj.dateActivity;
+    });
+
+    internMap.forEach((DateTime dateTime, List<Activity> value) {
+      value.forEach((element) {
+        String elementDate = element.dateActivity.toString().split(" ").elementAt(0);
+        if(dateAct == elementDate){
+          steptotal+=element.step;
+        }
+      });
+    });
+
     return Container(
       child: Column(
         children: [
@@ -108,7 +129,7 @@ class ActivityGroupSeparator extends StatelessWidget {
                 ),
                 Flexible(
                   flex: 1,
-                  child: Text("$steps",textAlign: TextAlign.end,),
+                  child: Text("$steptotal",textAlign: TextAlign.end,),
                 ),
               ],
             ),

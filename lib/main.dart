@@ -31,7 +31,17 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   const String _appTitle = "Marche à pieds";
 
-  await PrefService.init(prefix: 'pref_');
+  await PrefService.init(prefix: 'walkfit_');
+  PrefService.setDefaultValues({
+    'profile_steps': "6000",
+    'profile_user_display_name': "John Doe",
+    'profil_gender': "masculin",
+    'profil_weight_value': "80",
+    'profile_height_value': "187",
+    'profile_birth_day': "26",
+    'profile_birth_month': "01",
+    'profile_birth_year': "1995"
+  });
 
   AppLanguage appLanguage = AppLanguage();
   await appLanguage.fetchLocale();
@@ -69,27 +79,39 @@ class _AppState extends State<App> {
         break;
       case "/principal":
         return PageTransition(
-            settings: settings, child: Principale(), type: PageTransitionType.fade);
+            settings: settings,
+            child: Principale(),
+            type: PageTransitionType.fade);
         break;
       case "/detailjournal":
         return PageTransition(
-            settings: settings, child: DetailJournal(), type: PageTransitionType.fade);
+            settings: settings,
+            child: DetailJournal(),
+            type: PageTransitionType.fade);
         break;
       case "/settings":
         return PageTransition(
-            settings: settings, child: Settings(), type: PageTransitionType.fade);
+            settings: settings,
+            child: Settings(),
+            type: PageTransitionType.fade);
         break;
       case "/about":
         return PageTransition(
-            settings: settings, child: AboutScreen(), type: PageTransitionType.fade);
+            settings: settings,
+            child: AboutScreen(),
+            type: PageTransitionType.fade);
         break;
       case "/spark":
         return PageTransition(
-            settings: settings, child: SparkBar.withSampleData(), type: PageTransitionType.fade);
+            settings: settings,
+            child: SparkBar.withSampleData(),
+            type: PageTransitionType.fade);
         break;
       case "/detailactivity":
         return PageTransition(
-            settings: settings, child: DetailActivity(), type: PageTransitionType.fade);
+            settings: settings,
+            child: DetailActivity(),
+            type: PageTransitionType.fade);
         break;
 
       default:
@@ -117,7 +139,7 @@ class _AppState extends State<App> {
         GlobalCupertinoLocalizations.delegate,
         AppLocalizations.delegate,
       ],
-      initialRoute: "/intro",
+      initialRoute: "/principal",
       routes: {},
       onGenerateRoute: onGeneratedRoute,
     );

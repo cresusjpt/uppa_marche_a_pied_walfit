@@ -13,12 +13,12 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       body: SafeArea(
         child: NestedScrollView(
-          headerSliverBuilder: (context, isScrolled){
+          headerSliverBuilder: (context, isScrolled) {
             return <Widget>[
               SliverAppBar(
                 actions: <Widget>[
                   IconButton(
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.pushNamed(context, "/settings");
                     },
                     icon: Icon(Icons.settings),
@@ -27,7 +27,7 @@ class _ProfileState extends State<Profile> {
                 ],
                 expandedHeight: 100.0,
                 floating: false,
-                pinned : true,
+                pinned: true,
                 elevation: 0,
                 flexibleSpace: FlexibleSpaceBar(
                   collapseMode: CollapseMode.pin,
@@ -48,14 +48,15 @@ class _ProfileState extends State<Profile> {
                     flex: 1,
                     child: TextFieldPreference(
                       'Steps',
-                      'stems',
+                      'profile_steps',
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                   Flexible(
                     flex: 1,
                     child: TextFieldPreference(
                       'Name',
-                      'user_display_name',
+                      'profile_user_display_name',
                     ),
                   ),
                 ],
@@ -68,28 +69,33 @@ class _ProfileState extends State<Profile> {
                 children: [
                   Flexible(
                     flex: 1,
-                    child: TextFieldPreference(
-                      'Gender',
-                      'gender',
+                    child: DropdownPreference<String>(
+                      '',
+                      'profil_gender',
+                      defaultVal: "masculin",
+                      displayValues: ['Male', 'Female'],
+                      values: ["masculin", "feminin"],
                     ),
                   ),
                   Flexible(
                     flex: 1,
                     child: TextFieldPreference(
                       'Weight',
-                      'weight_value',
+                      'profil_weight_value',
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                   Flexible(
                     flex: 1,
                     child: TextFieldPreference(
                       'Height',
-                      'height_value',
+                      'profile_height_value',
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                 ],
               ),
-              PreferenceText('Bithday'),
+              PreferenceText('Birthday'),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.max,
@@ -98,42 +104,38 @@ class _ProfileState extends State<Profile> {
                     flex: 1,
                     child: TextFieldPreference(
                       'Day',
-                      'gender',
+                      'profile_birth_day',
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                   Flexible(
                     flex: 1,
                     child: TextFieldPreference(
                       'Month',
-                      'month_value',
+                      'profile_birth_month',
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                   Flexible(
                     flex: 1,
                     child: TextFieldPreference(
                       'Year',
-                      'year_value',
+                      'profile_birth_year',
+                      keyboardType: TextInputType.number,
                     ),
                   ),
                 ],
               ),
-              DropdownPreference<int>(
-                'Number of items',
-                'items_count',
-                defaultVal: 2,
-                displayValues: ['One', 'Two', 'Three', 'Four'],
-                values: [1, 2, 3, 4],
-              ),
               Divider(),
               Center(
                 child: InkWell(
-                    onTap: (){
-                      Navigator.pushNamed(context, "/about");
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: Text("© M1 SIGLIS, UPPA 2020 - 2021"),
-                    ),
+                  onTap: () {
+                    Navigator.pushNamed(context, "/about");
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Text("© M1 SIGLIS, UPPA 2020 - 2021"),
+                  ),
                 ),
               ),
             ]),

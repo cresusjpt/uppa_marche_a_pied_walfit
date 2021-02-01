@@ -1,6 +1,7 @@
 /// Example of a time series chart using a bar renderer.
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:marche_a_pied/models/Activity.dart';
 
 class TimeSeriesWeekBar extends StatelessWidget {
   final List<charts.Series<TimeSeriesSales, DateTime>> seriesList;
@@ -12,8 +13,15 @@ class TimeSeriesWeekBar extends StatelessWidget {
   factory TimeSeriesWeekBar.withSampleData() {
     return TimeSeriesWeekBar(
       _createSampleData(),
-      // Disable animations for image tests.
-      animate: false,
+      animate: true,
+    );
+  }
+
+  factory TimeSeriesWeekBar.customData(
+      List<Activity> activity) {
+    return new TimeSeriesWeekBar(
+      _createCustomData(activity),
+      animate: true,
     );
   }
 
@@ -64,6 +72,27 @@ class TimeSeriesWeekBar extends StatelessWidget {
         domainFn: (TimeSeriesSales sales, _) => sales.time,
         measureFn: (TimeSeriesSales sales, _) => sales.sales,
         data: data,
+      )
+    ];
+  }
+
+
+  /// Create one series with custom  data.
+  static List<charts.Series<TimeSeriesSales, DateTime>> _createCustomData(
+      List<Activity> activities) {
+    List<TimeSeriesSales> data = List();
+    activities.forEach((element) {
+      data.add(TimeSeriesSales(element.dateActivity, element.step));
+    });
+
+    return [
+      charts.Series<TimeSeriesSales, DateTime>(
+        id: 'Activities',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (TimeSeriesSales sales, _) => sales.time,
+        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        data: data,
+        displayName: "Activity",
       )
     ];
   }

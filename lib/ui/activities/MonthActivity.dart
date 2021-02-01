@@ -6,6 +6,10 @@ import 'package:flutter_calendar_carousel/classes/event_list.dart';
 
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
+import 'package:marche_a_pied/models/Activity.dart';
+import 'package:marche_a_pied/stream/StreamerCustom.dart';
+import 'package:marche_a_pied/ui/inheritedWidget/DetailInheritedWidget.dart';
+import 'package:marche_a_pied/ui/inheritedWidget/DetailInheritedWidgetData.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 class MonthActivity extends StatefulWidget {
@@ -14,11 +18,8 @@ class MonthActivity extends StatefulWidget {
 }
 
 class _MonthActivityState extends State<MonthActivity> {
-  DateTime _currentDate = DateTime(2021, 1, 11);
+  DateTime _currentDate;
   DateTime _currentDate2 = DateTime(2021, 1, 12);
-  String _currentMonth = DateFormat.yMMM().format(DateTime(2021, 1, 11));
-  DateTime _targetDateTime = DateTime(2021, 1, 26);
-  List<DateTime> _markedDate = [DateTime(2021, 1, 26), DateTime(2021, 1, 30)];
   static Widget _eventIcon = new Container(
     decoration: new BoxDecoration(
         color: Colors.white,
@@ -30,6 +31,8 @@ class _MonthActivityState extends State<MonthActivity> {
       color: Colors.amber,
     ),
   );
+
+  DateFormat formatActivityList = DateFormat("EEEE dd MMMM y");
 
   EventList<Event> _markedDateMap = new EventList<Event>(
     events: {
@@ -59,9 +62,14 @@ class _MonthActivityState extends State<MonthActivity> {
     },
   );
 
-
   CalendarCarousel _calendarCarousel;
 
+  DetailInheritedWidgetData inheritedWidgetData;
+  List<Activity> activities;
+  DateTime dateTime;
+  DateFormat format = DateFormat("EEEE, d MMMM y");
+
+  DateTime getDate(DateTime d) => DateTime(d.year, d.month, d.day);
 
   @override
   void initState() {
@@ -104,6 +112,11 @@ class _MonthActivityState extends State<MonthActivity> {
 
   @override
   Widget build(BuildContext context) {
+    inheritedWidgetData = DetailInheritedWidget.of(context).data;
+    activities = inheritedWidgetData.listActivities;
+    dateTime = inheritedWidgetData.dateTime;
+    _currentDate = dateTime;
+
     /// Example with custom icon
     _calendarCarousel = CalendarCarousel<Event>(
       onDayPressed: (DateTime date, List<Event> events) {
@@ -111,16 +124,16 @@ class _MonthActivityState extends State<MonthActivity> {
         events.forEach((event) => print(event.title));
       },
       thisMonthDayBorderColor: Colors.transparent,
-      //selectedDayButtonColor: Color(0xFF30A9B2),
-      //selectedDayBorderColor: Color(0xFF30A9B2),
       selectedDayTextStyle: TextStyle(color: Colors.yellow),
-      weekendTextStyle: TextStyle(color: Colors.red,),
-      //daysTextStyle: TextStyle(color: Colors.white),
+      weekendTextStyle: TextStyle(
+        color: Colors.red,
+      ),
       nextDaysTextStyle: TextStyle(color: Colors.transparent),
       prevDaysTextStyle: TextStyle(color: Colors.transparent),
-      todayTextStyle: TextStyle(color: Colors.blue,),
+      todayTextStyle: TextStyle(
+        color: Colors.blue,
+      ),
       showWeekDays: true,
-      //headerText: 'Janvier 2021',
       weekFormat: false,
       firstDayOfWeek: 1,
       isScrollable: true,
@@ -157,38 +170,46 @@ class _MonthActivityState extends State<MonthActivity> {
       ),
     );
 
-    List<String> itemList = List();
-    itemList.add("28 December 2020 - 3 January 2021");
-    itemList.add("21 - 27 December 2020");
-    itemList.add("14 - 20 December 2020");
-    itemList.add("07 - 13 December 2020");
-    itemList.add("30 November - 6 December 2020");
-
-    itemList = itemList.reversed.toList();
-
     return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 8.0),
-              child: _calendarCarousel,
-            ),
-            Divider(),
-            ...itemList.map((item) {
-              return InkWell(
-                onTap: (){
-
-                },
-                child: ListTile(
-                  title: Text(item),
-                  subtitle: Text("8078 steps"),
-                ),
-              );
-            }).toList(),
-          ],
-        ),
-      );
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 8.0),
+            child: _calendarCarousel,
+          ),
+          Divider(),
+          StreamBuilder<List<Activity>>(
+              stream: StreamerCustom("http://10.0.2.2:8080")
+                  .monthActivityStream("2021-01-01", "2021-01-31", 1),
+              builder: (context, snapshot) {
+                final List<Activity> monthActivities =
+                    snapshot.hasData ? snapshot.data : activities;
+                return Column(
+                  children: [
+                    ...monthActivities.map((act) {
+                      DateTime begin = getDate(act.dateActivity.subtract(
+                          Duration(days: act.dateActivity.weekday - 1)));
+                      DateTime end = getDate(act.dateActivity.add(Duration(
+                          days: DateTime.daysPerWeek -
+                              act.dateActivity.weekday)));
+                      DateFormat dt = DateFormat("dd");
+                      DateFormat dtFinal = DateFormat(" MMMM y");
+                      return InkWell(
+                        onTap: () {},
+                        child: ListTile(
+                          title: Text(
+                              "${dt.format(begin)} - ${dt.format(end)} ${dtFinal.format(end)}"),
+                          subtitle: Text("${act.step} steps"),
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                );
+              }),
+        ],
+      ),
+    );
   }
 }
