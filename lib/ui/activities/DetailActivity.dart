@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marche_a_pied/i18n/AppLocalizations.dart';
 import 'package:marche_a_pied/models/Activity.dart';
 import 'package:marche_a_pied/ui/activities/DayActivity.dart';
 import 'package:marche_a_pied/ui/activities/MonthActivity.dart';
@@ -33,12 +34,12 @@ class _DetailActivityState extends State<DetailActivity> {
           bottom: TabBar(
             tabs: [
               Tab(
-                text: "Day",
+                text: AppLocalizations.of(context).translate("day"),
               ),Tab(
-                text: "Week",
+                text: AppLocalizations.of(context).translate("week"),
               ),
               Tab(
-                text: "Month",
+                text: AppLocalizations.of(context).translate("month"),
               ),
             ],
           ),

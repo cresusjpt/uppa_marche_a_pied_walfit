@@ -4,6 +4,7 @@ class Asset {
   static const PICTURE_JEANPAUL_TOSSOU = '$IMAGES/jeanpaul_tossou.png';
   static const PICTURE_THILOR = '$IMAGES/thilor_sene.jpg';
   static const PICTURE_PATRICIA = '$IMAGES/patricia_ndong.jpg';
+  static const PICTURE_NAVARRO = '$IMAGES/navarro.png';
 
   static const GITHUB_DARK = '$IMAGES/GitHub-Mark.png';
   static const GITHUB_WHITE = '$IMAGES/GitHub-Mark-Light.png';

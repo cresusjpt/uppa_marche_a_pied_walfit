@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:preferences/preferences.dart';
-import 'package:validators/validators.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -23,9 +22,9 @@ class _SettingsState extends State<Settings> {
               desc: "Kilometers",
               dialog: PreferenceDialog(
                 [
-                  RadioPreference('Kilograms', 'select_1', 'weight_radio'),
-                  RadioPreference('Stones', 'select_2', 'weight_radio'),
-                  RadioPreference('Pounds', 'select_3', 'weight_radio'),
+                  RadioPreference('Kilograms', 'weight_kg', 'weight_radio'),
+                  RadioPreference('Stones', 'weight_stones', 'weight_radio'),
+                  RadioPreference('Pounds', 'weight_pounds', 'weight_radio'),
                 ],
                 title: 'Weight',
                 cancelText: 'Cancel',
@@ -36,8 +35,8 @@ class _SettingsState extends State<Settings> {
               desc: "Kilometers",
               dialog: PreferenceDialog(
                 [
-                  RadioPreference('Kilometers', 'select_1', 'distance_radio'),
-                  RadioPreference('Miles', 'select_2', 'distance_radio'),
+                  RadioPreference('Kilometers', 'distance_km', 'distance_radio'),
+                  RadioPreference('Miles', 'distance_miles', 'distance_radio'),
                 ],
                 title: 'Distance',
                 cancelText: 'Cancel',
@@ -55,43 +54,47 @@ class _SettingsState extends State<Settings> {
                 cancelText: 'Cancel',
               ),
             ),
-            PreferenceTitle('Notifications'),
-            PreferencePageLink(
-              'Notifications',
-              trailing: Icon(Icons.keyboard_arrow_right),
-              page: PreferencePage([
-                PreferenceTitle('New Posts'),
-                SwitchPreference(
-                  'New Posts from Friends',
-                  'notification_newpost_friend',
-                  defaultVal: true,
-                ),
-                PreferenceTitle('Private Messages'),
-                SwitchPreference(
-                  'Private Messages from Friends',
-                  'notification_pm_friend',
-                  defaultVal: true,
-                ),
-                SwitchPreference(
-                  'Private Messages from Strangers',
-                  'notification_pm_stranger',
-                  onEnable: () async {
-                    // Write something in Firestore or send a request
-                    await Future.delayed(Duration(seconds: 1));
+            Visibility(
+                child: PreferenceTitle('Notifications'),
+            ),
+            Visibility(
+              child: PreferencePageLink(
+                'Notifications',
+                trailing: Icon(Icons.keyboard_arrow_right),
+                page: PreferencePage([
+                  PreferenceTitle('New Posts'),
+                  SwitchPreference(
+                    'New Posts from Friends',
+                    'notification_newpost_friend',
+                    defaultVal: true,
+                  ),
+                  PreferenceTitle('Private Messages'),
+                  SwitchPreference(
+                    'Private Messages from Friends',
+                    'notification_pm_friend',
+                    defaultVal: true,
+                  ),
+                  SwitchPreference(
+                    'Private Messages from Strangers',
+                    'notification_pm_stranger',
+                    onEnable: () async {
+                      // Write something in Firestore or send a request
+                      await Future.delayed(Duration(seconds: 1));
 
-                    print('Enabled Notifications for PMs from Strangers!');
-                  },
-                  onDisable: () async {
-                    // Write something in Firestore or send a request
-                    await Future.delayed(Duration(seconds: 1));
+                      print('Enabled Notifications for PMs from Strangers!');
+                    },
+                    onDisable: () async {
+                      // Write something in Firestore or send a request
+                      await Future.delayed(Duration(seconds: 1));
 
-                    // No Connection? No Problem! Just throw an Exception with your custom message...
-                    throw Exception('No Connection');
+                      // No Connection? No Problem! Just throw an Exception with your custom message...
+                      throw Exception('No Connection');
 
-                    // Disabled Notifications for PMs from Strangers!
-                  },
-                ),
-              ]),
+                      // Disabled Notifications for PMs from Strangers!
+                    },
+                  ),
+                ]),
+              ),
             ),
             PreferenceTitle('Privacy'),
             PreferencePageLink(
@@ -100,34 +103,9 @@ class _SettingsState extends State<Settings> {
               page: PreferencePage([
                 PreferenceTitle('New Posts'),
                 SwitchPreference(
-                  'New Posts from Friends',
+                  "J'accepte de participer à ",
                   'notification_newpost_friend',
                   defaultVal: true,
-                ),
-                PreferenceTitle('Private Messages'),
-                SwitchPreference(
-                  'Private Messages from Friends',
-                  'notification_pm_friend',
-                  defaultVal: true,
-                ),
-                SwitchPreference(
-                  'Private Messages from Strangers',
-                  'notification_pm_stranger',
-                  onEnable: () async {
-                    // Write something in Firestore or send a request
-                    await Future.delayed(Duration(seconds: 1));
-
-                    print('Enabled Notifications for PMs from Strangers!');
-                  },
-                  onDisable: () async {
-                    // Write something in Firestore or send a request
-                    await Future.delayed(Duration(seconds: 1));
-
-                    // No Connection? No Problem! Just throw an Exception with your custom message...
-                    throw Exception('No Connection');
-
-                    // Disabled Notifications for PMs from Strangers!
-                  },
                 ),
               ]),
             ),
@@ -138,16 +116,6 @@ class _SettingsState extends State<Settings> {
                   'Use background location during automatically tracked activities',
             ),//// Use ! to get reversed boolean values
             PreferenceTitle('Display'),
-            RadioPreference(
-              'System default',
-              'system_theme',
-              'ui_theme',
-              isDefault: true,
-              selected: true,
-              onSelect: () {
-                //DynamicTheme.of(context).setBrightness(Brightness.light);
-              },
-            ),
             RadioPreference(
               'Light Theme',
               'light_theme',

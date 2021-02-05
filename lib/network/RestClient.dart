@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:marche_a_pied/models/Activity.dart';
 import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart' hide Headers;
 
 part 'RestClient.g.dart';
 
-@RestApi(baseUrl: "http://192.168.0.19:8080/")
+@RestApi(baseUrl: "http://walkfitapi.mikroair.com/")
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 

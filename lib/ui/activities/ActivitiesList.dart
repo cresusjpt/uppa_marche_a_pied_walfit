@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:marche_a_pied/i18n/AppLocalizations.dart';
 import 'package:marche_a_pied/models/Activity.dart';
 import 'package:marche_a_pied/stream/StreamerCustom.dart';
 import 'package:marche_a_pied/styles/AppTheme.dart';
 import 'package:marche_a_pied/widget/CustomDailyGoals.dart';
 import 'package:marche_a_pied/widget/CustomFloatingActionButton.dart';
-
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:marche_a_pied/widget/charts/DayTimeSerieRender.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ActivitiesList extends StatefulWidget {
@@ -18,9 +16,6 @@ class ActivitiesList extends StatefulWidget {
 
 class _ActivitiesListState extends State<ActivitiesList> {
   SharedPreferences sharedPrefs;
-
-  @override
-  void initState() {}
 
   Future<SharedPreferences> _getPrefs() async {
     sharedPrefs = await SharedPreferences.getInstance();
@@ -37,8 +32,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
             child: Column(
               children: [
                 StreamBuilder(
-                    stream: StreamerCustom("http://10.0.2.2:8080")
-                        .todayActivityStream(1),
+                    stream: StreamerCustom(null).todayActivityStream(1),
                     builder: (context, snapshot) {
                       final List<Activity> activities = snapshot.data ?? List();
                       int step = 0;
@@ -64,7 +58,8 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                   elevation: 0.0,
                                   onPressed: () {
                                     Navigator.pushNamed(
-                                        context, '/detailactivity', arguments: activities);
+                                        context, '/detailactivity',
+                                        arguments: activities);
                                   },
                                   child: Stack(
                                     overflow: Overflow.clip,
@@ -190,15 +185,14 @@ class _ActivitiesListState extends State<ActivitiesList> {
                       );
                     }),
                 StreamBuilder(
-                  stream: StreamerCustom("http://10.0.2.2:8080")
-                      .pastWeekActivityStream(1),
+                  stream: StreamerCustom(null).pastWeekActivityStream(1),
                   builder: (context, snapshot) {
                     final List<Activity> activities = snapshot.data ?? List();
                     int average = 0;
                     activities.forEach((element) {
-                      average+=element.step;
+                      average += element.step;
                     });
-                    average~/=7;
+                    average ~/= 7;
                     return Column(
                       children: [
                         Card(
@@ -208,23 +202,24 @@ class _ActivitiesListState extends State<ActivitiesList> {
                           ),
                           elevation: 2.3,
                           child: InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(context, "/spark");
-                            },
+                            onTap: () {},
                             child: ListTile(
                               title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 3.0),
-                                    child: Text("Your daily goals",
+                                    child: Text(
+                                        AppLocalizations.of(context)
+                                            .translate("daily_goals"),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold)),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 8.0),
                                     child: Text(
-                                      "Last 7 days",
+                                      AppLocalizations.of(context)
+                                          .translate("last_seven_days"),
                                       style: TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.normal),
@@ -255,7 +250,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                           }
                                         });
                                         return Text(
-                                          "$goals/7\nAchieved",
+                                          "$goals/${activities.length}\n${AppLocalizations.of(context).translate("achieved")}",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16),
@@ -269,21 +264,29 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         ...activities.map((activityElement) {
-                                          String value = DateFormat("E").format(activityElement.dateActivity).toUpperCase();
+                                          String value = DateFormat("E")
+                                              .format(
+                                                  activityElement.dateActivity)
+                                              .toUpperCase();
                                           value = "${value[0]}";
                                           return FutureBuilder(
                                             future: _getPrefs(),
                                             builder: (context, snSharedP) {
-                                              final int dayStt = snSharedP.hasData
-                                                  ? int.parse(snSharedP.data.getString(
-                                                  "walkfit_profile_steps")) ??
-                                                  6000
+                                              final int dayStt = snSharedP
+                                                      .hasData
+                                                  ? int.parse(snSharedP.data
+                                                          .getString(
+                                                              "walkfit_profile_steps")) ??
+                                                      6000
                                                   : 6000;
                                               return Padding(
                                                 padding: const EdgeInsets.only(
                                                     right: 3.0),
                                                 child: CustomDailyGoals(
-                                                    day: value, value: activityElement.step / dayStt),
+                                                    day: value,
+                                                    value:
+                                                        activityElement.step /
+                                                            dayStt),
                                               );
                                             },
                                           );
@@ -310,14 +313,15 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 3.0),
-                                    child: Text("Steps",
+                                    child: Text(AppLocalizations.of(context).translate("steps"),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold)),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 8.0),
                                     child: Text(
-                                      "Last 7 days",
+                                      AppLocalizations.of(context)
+                                          .translate("last_seven_days_num"),
                                       style: TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.normal),
@@ -334,7 +338,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                   Flexible(
                                     flex: 1,
                                     child: Text(
-                                      "$average\nAverage",
+                                      "$average\n${AppLocalizations.of(context).translate("average")}",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16),
@@ -346,16 +350,18 @@ class _ActivitiesListState extends State<ActivitiesList> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         ...activities.map((e) {
-                                          String value = DateFormat("E").format(e.dateActivity).toUpperCase();
+                                          String value = DateFormat("E")
+                                              .format(e.dateActivity)
+                                              .toUpperCase();
                                           value = "${value[0]}";
                                           return Padding(
-                                            padding:
-                                            const EdgeInsets.only(right: 3.0),
+                                            padding: const EdgeInsets.only(
+                                                right: 3.0),
                                             child: CustomDailyGoals(
-                                                day: value, value: e.step/average),
+                                                day: value,
+                                                value: e.step / average),
                                           );
-                                        }
-                                        ).toList(),
+                                        }).toList(),
                                       ],
                                     ),
                                   ),
@@ -377,9 +383,9 @@ class _ActivitiesListState extends State<ActivitiesList> {
                   child: InkWell(
                     onTap: () {},
                     child: ListTile(
-                      title: Text("Heart rate"),
+                      title: Text(AppLocalizations.of(context).translate("last_seven_days")),
                       trailing: Icon(Icons.chevron_right_outlined),
-                      subtitle: Text("No recent data"),
+                      subtitle: Text(AppLocalizations.of(context).translate("no_recent_data")),
                     ),
                   ),
                 ),
@@ -392,9 +398,9 @@ class _ActivitiesListState extends State<ActivitiesList> {
                   child: InkWell(
                     onTap: () {},
                     child: ListTile(
-                      title: Text("Weight"),
+                      title: Text(AppLocalizations.of(context).translate("weigth")),
                       trailing: Icon(Icons.chevron_right_outlined),
-                      subtitle: Text("No recent data"),
+                      subtitle: Text(AppLocalizations.of(context).translate("no_recent_data")),
                     ),
                   ),
                 ),

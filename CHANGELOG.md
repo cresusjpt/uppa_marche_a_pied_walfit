@@ -1,0 +1,3 @@
+- Api for query the database is done with Yii framework available on walkfit.mikroair.com. Fake data change for network data binding. next review the licence and changelogs screen and generate app launcher icon.
+- just a commit between platform builds.
+- First commit. All interfaces is done with fake data. Next steps, write the api part to bind the data. But for now need to send capture to patricia to put it in the documentation

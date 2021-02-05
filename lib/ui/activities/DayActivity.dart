@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
 import 'package:marche_a_pied/models/Activity.dart';
 import 'package:marche_a_pied/stream/StreamerCustom.dart';
-import 'package:marche_a_pied/ui/example/ContainerChartExamples.dart';
-import 'package:marche_a_pied/ui/example/WithBarRenderer.dart';
 import 'package:marche_a_pied/ui/inheritedWidget/DetailInheritedWidget.dart';
 import 'package:marche_a_pied/ui/inheritedWidget/DetailInheritedWidgetData.dart';
 import 'package:marche_a_pied/widget/charts/DayTimeSerieRender.dart';
@@ -37,7 +34,7 @@ class _DayActivityState extends State<DayActivity> {
 
     return SingleChildScrollView(
       child: StreamBuilder<List<Activity>>(
-        stream: StreamerCustom("http://10.0.2.2:8080").byDateActivityStream(formatBydate.format(dateTime), 1),
+        stream: StreamerCustom(null).byDateActivityStream(formatBydate.format(dateTime), 1),
         builder: (context, snapshot) {
           final List<Activity> daysActivities = snapshot.hasData ? snapshot.data : activities;
           return Column(

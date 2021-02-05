@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:marche_a_pied/i18n/AppLocalizations.dart';
 import 'package:preferences/preferences.dart';
-import 'package:validators/validators.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -22,7 +22,7 @@ class _ProfileState extends State<Profile> {
                       Navigator.pushNamed(context, "/settings");
                     },
                     icon: Icon(Icons.settings),
-                    tooltip: "deactivate_diffuser",
+                    tooltip: AppLocalizations.of(context).translate("refresh"),
                   )
                 ],
                 expandedHeight: 100.0,
@@ -31,14 +31,14 @@ class _ProfileState extends State<Profile> {
                 elevation: 0,
                 flexibleSpace: FlexibleSpaceBar(
                   collapseMode: CollapseMode.pin,
-                  title: Text("Profile"),
+                  title: Text(AppLocalizations.of(context).translate("profile")),
                 ),
               ),
             ];
           },
           body: Center(
             child: PreferencePage([
-              PreferenceTitle('Activity goals'),
+              PreferenceTitle(AppLocalizations.of(context).translate("act_goals")),
               Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,7 +47,7 @@ class _ProfileState extends State<Profile> {
                   Flexible(
                     flex: 1,
                     child: TextFieldPreference(
-                      'Steps',
+                      AppLocalizations.of(context).translate("steps"),
                       'profile_steps',
                       keyboardType: TextInputType.number,
                     ),
@@ -55,13 +55,13 @@ class _ProfileState extends State<Profile> {
                   Flexible(
                     flex: 1,
                     child: TextFieldPreference(
-                      'Name',
+                      AppLocalizations.of(context).translate("name"),
                       'profile_user_display_name',
                     ),
                   ),
                 ],
               ),
-              PreferenceTitle('About you'),
+              PreferenceTitle(AppLocalizations.of(context).translate("about")),
               Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,7 +80,7 @@ class _ProfileState extends State<Profile> {
                   Flexible(
                     flex: 1,
                     child: TextFieldPreference(
-                      'Weight',
+                      AppLocalizations.of(context).translate("weigth"),
                       'profil_weight_value',
                       keyboardType: TextInputType.number,
                     ),
@@ -88,7 +88,7 @@ class _ProfileState extends State<Profile> {
                   Flexible(
                     flex: 1,
                     child: TextFieldPreference(
-                      'Height',
+                      AppLocalizations.of(context).translate("heigth"),
                       'profile_height_value',
                       keyboardType: TextInputType.number,
                     ),
@@ -103,7 +103,7 @@ class _ProfileState extends State<Profile> {
                   Flexible(
                     flex: 1,
                     child: TextFieldPreference(
-                      'Day',
+                      AppLocalizations.of(context).translate("day"),
                       'profile_birth_day',
                       keyboardType: TextInputType.number,
                     ),
@@ -111,7 +111,7 @@ class _ProfileState extends State<Profile> {
                   Flexible(
                     flex: 1,
                     child: TextFieldPreference(
-                      'Month',
+                      AppLocalizations.of(context).translate("month"),
                       'profile_birth_month',
                       keyboardType: TextInputType.number,
                     ),
@@ -119,7 +119,7 @@ class _ProfileState extends State<Profile> {
                   Flexible(
                     flex: 1,
                     child: TextFieldPreference(
-                      'Year',
+                      AppLocalizations.of(context).translate("year"),
                       'profile_birth_year',
                       keyboardType: TextInputType.number,
                     ),

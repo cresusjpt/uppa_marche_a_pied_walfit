@@ -4,7 +4,7 @@ import 'RestClient.dart';
 
 class RestApi {
   static String BASE_URL_PART = "192.168.0.19";
-  static String REST_API_WEB_URL = "https://walkfit.mikroair.com/";
+  static String REST_API_WEB_URL = "http://walkfitapi.mikroair.com/";
 
   static RestClient createClient({String url}) {
     Dio dio = Dio();

@@ -31,11 +31,9 @@ class AppLanguage extends ChangeNotifier {
       await fetchLocale();
       rebuild.add(true);
       yield true;
-      print('JEANPAUL YIELD TRUE');
     }else{
       rebuild.add(false);
       yield false;
-      print('JEANPAUL YIELD FALSE');
     }
   }
 
@@ -48,17 +46,11 @@ class AppLanguage extends ChangeNotifier {
   void changeLanguage(Locale type) async {
     var prefs = await SharedPreferences.getInstance();
     if (prefs.getString('language_code') == null) {
-      print("JEANPAUL object TEST ${prefs.getString("language_code")}");
       await fetchLocale();
       prefs = await SharedPreferences.getInstance();
-      print("JEANPAUL object ${prefs.getString("language_code")}");
     }
-    print("JEANPAUL object ${prefs.getString("language_code")}");
     previous = Locale(prefs.getString("language_code"));
 
-    /*if (_appLocale == type) {
-      return;
-    }*/
     if (type == Locale("fr")) {
       _appLocale = Locale("fr");
       await prefs.setString('language_code', 'fr');

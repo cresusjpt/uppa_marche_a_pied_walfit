@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marche_a_pied/i18n/AppLocalizations.dart';
 import 'package:marche_a_pied/models/Activity.dart';
 
 class DetailJournal extends StatefulWidget {
@@ -27,21 +28,21 @@ class _DetailJournalState extends State<DetailJournal> {
 
             },
             icon: Icon(Icons.edit_outlined),
-            tooltip: "Edit",
+            tooltip: AppLocalizations.of(context).translate("edit"),
           ),
           IconButton(
             onPressed: (){
 
             },
             icon: Icon(Icons.share_outlined),
-            tooltip: "Share",
+            tooltip: AppLocalizations.of(context).translate("share"),
           ),
           IconButton(
             onPressed: (){
 
             },
             icon: Icon(Icons.delete_outline_outlined),
-            tooltip: "Delete",
+            tooltip: AppLocalizations.of(context).translate("delete"),
           ),
         ],
       ),
@@ -52,7 +53,7 @@ class _DetailJournalState extends State<DetailJournal> {
               Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 30,horizontal: 20),
-                  child: Text("Steps : ${currentActivity.step}"),
+                  child: Text("${AppLocalizations.of(context).translate("steps")} : ${currentActivity.step}"),
                 ),
               ),
               Padding(
@@ -110,7 +111,7 @@ class _DetailJournalState extends State<DetailJournal> {
                       child: Row(
                         children: [
                           Icon(Icons.space_bar_outlined),
-                          Text("Duration",)
+                          Text(AppLocalizations.of(context).translate("duration"))
                         ],
                       )
                     ),
@@ -132,7 +133,7 @@ class _DetailJournalState extends State<DetailJournal> {
                       child: Row(
                         children: [
                           Icon(Icons.speed_outlined),
-                          Text("Pace",)
+                          Text(AppLocalizations.of(context).translate("pace"))
                         ],
                       )
                     ),

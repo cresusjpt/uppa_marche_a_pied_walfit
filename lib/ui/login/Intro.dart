@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:marche_a_pied/ui/login/Login.dart';
-import 'package:marche_a_pied/ui/login/Signup.dart';
+import 'package:marche_a_pied/i18n/AppLocalizations.dart';
 
 class Intro extends StatefulWidget {
   Intro({Key key, this.title}) : super(key: key);
@@ -16,8 +15,8 @@ class _IntroState extends State<Intro> {
   Widget _submitButton() {
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Login()));
+        Navigator.pushNamed(
+            context, '/principal');
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -34,7 +33,7 @@ class _IntroState extends State<Intro> {
             ],
             color: Colors.white),
         child: Text(
-          'Login',
+          AppLocalizations.of(context).translate("connexion"),
           style: TextStyle(fontSize: 20, color: Color(0xfff7892b)),
         ),
       ),
@@ -44,8 +43,8 @@ class _IntroState extends State<Intro> {
   Widget _signUpButton() {
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUp()));
+        Navigator.pushNamed(
+            context, '/principal');
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -56,7 +55,7 @@ class _IntroState extends State<Intro> {
           border: Border.all(color: Colors.white, width: 2),
         ),
         child: Text(
-          'Register now',
+          AppLocalizations.of(context).translate("inscription"),
           style: TextStyle(fontSize: 20, color: Colors.white),
         ),
       ),
@@ -69,7 +68,7 @@ class _IntroState extends State<Intro> {
         child: Column(
           children: <Widget>[
             Text(
-              'Quick login with Touch ID',
+              AppLocalizations.of(context).translate("login_touch"),
               style: TextStyle(color: Colors.white, fontSize: 17),
             ),
             SizedBox(
@@ -80,7 +79,7 @@ class _IntroState extends State<Intro> {
               height: 20,
             ),
             Text(
-              'Touch ID',
+              AppLocalizations.of(context).translate("touch_id"),
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,

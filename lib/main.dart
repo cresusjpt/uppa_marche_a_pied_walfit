@@ -1,18 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:marche_a_pied/i18n/AppLanguage.dart';
 import 'package:marche_a_pied/i18n/AppLocalizations.dart';
 import 'package:marche_a_pied/styles/AppTheme.dart';
+import 'package:marche_a_pied/ui/Licences.dart';
 import 'package:marche_a_pied/ui/Principale.dart';
 import 'package:marche_a_pied/ui/about/About.dart';
-import 'package:marche_a_pied/ui/activities/DayActivity.dart';
 import 'package:marche_a_pied/ui/activities/DetailActivity.dart';
-import 'package:marche_a_pied/ui/example/CarouselCalendar.dart';
-import 'package:marche_a_pied/ui/example/CarouselExample.dart';
-import 'package:marche_a_pied/ui/example/ContainerChartExamples.dart';
 import 'package:marche_a_pied/ui/example/SparkChart.dart';
-import 'package:marche_a_pied/ui/example/WithBarRenderer.dart';
 import 'package:marche_a_pied/ui/journal/DetailJournal.dart';
 import 'package:marche_a_pied/ui/login/Intro.dart';
 import 'package:marche_a_pied/ui/login/Login.dart';
@@ -23,7 +17,6 @@ import 'package:preferences/preference_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'package:charts_flutter/flutter.dart' as charts;
 
 //void main() => runApp(MyApp());
 
@@ -113,6 +106,12 @@ class _AppState extends State<App> {
             child: DetailActivity(),
             type: PageTransitionType.fade);
         break;
+      case "/licences":
+        return PageTransition(
+            settings: settings,
+            child: LicencesScreen(),
+            type: PageTransitionType.fade);
+        break;
 
       default:
         return null;
@@ -121,7 +120,6 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
 
     return MaterialApp(
       title: widget.title,
@@ -139,7 +137,7 @@ class _AppState extends State<App> {
         GlobalCupertinoLocalizations.delegate,
         AppLocalizations.delegate,
       ],
-      initialRoute: "/principal",
+      initialRoute: "/intro",
       routes: {},
       onGenerateRoute: onGeneratedRoute,
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:marche_a_pied/i18n/AppLocalizations.dart';
 
 import 'package:marche_a_pied/models/Activity.dart';
 import 'package:marche_a_pied/stream/StreamerCustom.dart';
@@ -50,7 +51,7 @@ class _WeekActivityState extends State<WeekActivity> {
 
     return SingleChildScrollView(
       child: StreamBuilder<List<Activity>>(
-        stream: StreamerCustom("http://10.0.2.2:8080").intervallDaysActivityStream(DateFormat("yyyy-MM-dd").format(dateTimeBegin), DateFormat("yyyy-MM-dd").format(dateTimeEnd), 1),
+        stream: StreamerCustom(null).intervallDaysActivityStream(DateFormat("yyyy-MM-dd").format(dateTimeBegin), DateFormat("yyyy-MM-dd").format(dateTimeEnd), 1),
         builder: (context, snapshot) {
           final List<Activity> weekActivities = snapshot.hasData ? snapshot.data : activities;
           return Column(
@@ -89,7 +90,7 @@ class _WeekActivityState extends State<WeekActivity> {
                   },
                   child: ListTile(
                     title: Text(formatActivityList.format(act.dateActivity)),
-                    subtitle: Text("${act.step} steps"),
+                    subtitle: Text("${act.step} ${AppLocalizations.of(context).translate("steps")}"),
                   ),
                 );
               }).toList(),
@@ -99,5 +100,4 @@ class _WeekActivityState extends State<WeekActivity> {
       ),
     );
   }
-
 }

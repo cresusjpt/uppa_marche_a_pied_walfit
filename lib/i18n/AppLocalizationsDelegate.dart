@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'AppLocalizations.dart';
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
-  // This delegate instance will never change (it doesn't even have fields!)
-  // It can provide a constant constructor.
   const AppLocalizationsDelegate();
 
   @override

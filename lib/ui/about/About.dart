@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:marche_a_pied/i18n/AppLocalizations.dart';
 import 'package:marche_a_pied/keys/Assets.dart';
 import 'package:marche_a_pied/keys/Url.dart';
 import 'package:marche_a_pied/utils/Functions.dart';
@@ -35,10 +36,10 @@ class AboutScreen extends StatelessWidget {
 
   Widget _buildWhatIsIt(BuildContext context) {
     return AboutCard(
-      title: "What is it",
+      title: AppLocalizations.of(context).translate("what"),
       children: [
         Text(
-          "Application dévéloppé en gestion de projet en Master 1 Uppa",
+          AppLocalizations.of(context).translate("what_message"),
           //style: Theme.of(context).textTheme.bodyText2,
           textAlign: TextAlign.justify,
         )
@@ -48,7 +49,7 @@ class AboutScreen extends StatelessWidget {
 
   Widget _buildAuthor(BuildContext context) {
     return AboutCard(
-      title: "Author",
+      title: AppLocalizations.of(context).translate("author"),
       lateralPadding: false,
       children: [
         ListTile(
@@ -63,7 +64,7 @@ class AboutScreen extends StatelessWidget {
           subtitle: Text("Lead Dev"),
           onTap: () => openLink(
             context,
-            Url.myWebsite,
+            Url.githubProjet,
             ""
           ),
         ),ListTile(
@@ -95,7 +96,24 @@ class AboutScreen extends StatelessWidget {
           ),
           onTap: () => openLink(
             context,
-            Url.justinWebsite,
+            Url.thilorWebsite,
+            ""
+          ),
+        ),
+        ListTile(
+          leading: CircleImage(
+            image: Image.asset(
+              Asset.PICTURE_NAVARRO,
+              width: 45.0,
+              semanticLabel: "Photo M. Navarro Xavier",
+            ),
+          ),
+          title: const Text("Xavier Navarro\nMaitre de Conférences - UPPA"),
+          subtitle: Text("Project Manager",
+          ),
+          onTap: () => openLink(
+            context,
+            Url.navarroWebsite,
             ""
           ),
         )
@@ -143,7 +161,7 @@ class AboutScreen extends StatelessWidget {
             semanticLabel: "Logo Twitter",
           ),
           title: const Text("Twitter"),
-          subtitle: Text("Ask your question on twitter"),
+          subtitle: Text(AppLocalizations.of(context).translate("ask_twitter")),
           onTap: () => openLink(context, Url.myTwitter, ""),
         ),
       ],
@@ -165,13 +183,13 @@ class AboutScreen extends StatelessWidget {
       lateralPadding: false,
       children: [
         ListTile(
-          title: Text("Changelog"),
+          title: Text(AppLocalizations.of(context).translate("changelog")),
           subtitle: Text("See the changelog of the app"),
           onTap: onChangeLogTap,
         ),
         ListTile(
           title: Text("Licenses"),
-          subtitle: Text("Licenses details for open softwares"),
+          subtitle: Text(AppLocalizations.of(context).translate("licences_details")),
           onTap: onLicensesTap,
         ),
         ListTile(
@@ -215,7 +233,7 @@ class AboutScreen extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text("Changelog",
+              child: Text(AppLocalizations.of(context).translate("changelog"),
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 24.0,
@@ -234,7 +252,7 @@ class AboutScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("About"),
+          title: Text(AppLocalizations.of(context).translate("about")),
         ),
         body: Container(
           child: ListView(

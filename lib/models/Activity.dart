@@ -84,45 +84,6 @@ class Activity {
       this.latitude,
       this.longitude,
       this.idParticipant});
-
-  List<Activity> bindData() {
-    List<Activity> ret = List();
-
-    Activity act0 = Activity(
-      dateActivity: DateTime.now(),
-      heureDebut: 1608403680000,
-      heureFin: 1608408896000,
-      name: "Evening walk",
-      calorie: 215,
-      step: 4334,
-      typeActivite: 1,
-      distance: 3.18,
-      minuteActive: 120,
-      latitude: 63.78333,
-      longitude: 128,
-      idParticipant: 1,
-    );
-
-    Activity act1 = Activity(
-      dateActivity: DateTime.now().subtract(Duration(hours: 24)),
-      heureDebut: 1608399356000,
-      heureFin: 1608404622000,
-      name: "Evening walk",
-      calorie: 215,
-      step: 992,
-      typeActivite: 1,
-      distance: 9.12,
-      minuteActive: 120,
-      latitude: 63.78333,
-      longitude: 128,
-      idParticipant: 1,
-    );
-
-    ret.add(act0);
-    ret.add(act1);
-
-    return ret;
-  }
   
   String applyName(){
     if(this.name != null && this.name.isNotEmpty){
