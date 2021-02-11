@@ -383,7 +383,7 @@ class _ActivitiesListState extends State<ActivitiesList> {
                   child: InkWell(
                     onTap: () {},
                     child: ListTile(
-                      title: Text(AppLocalizations.of(context).translate("last_seven_days")),
+                      title: Text(AppLocalizations.of(context).translate("heart_rate")),
                       trailing: Icon(Icons.chevron_right_outlined),
                       subtitle: Text(AppLocalizations.of(context).translate("no_recent_data")),
                     ),
